@@ -1,20 +1,30 @@
 if (process.env.NODE_ENV === 'development') {
   console.log('DEV MODE!');
 }
-import dotenv from 'dotenv';
-dotenv.config();
 
 import createError from 'http-errors';
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import cors from 'cors';
+import mongoose from 'mongoose';
+import { CLIENT_URL, DB_URL, PORT } from './config/index.js';
 
-import { CLIENT_URL } from './config/index.js';
-import indexRouter from './routes/index.js'
+import indexRouter from './routes/index.js';
 
 const app = express();
-const port = process.env.PORT || 3001;
+
+mongoose.set('strictQuery', true);
+mongoose.connect(DB_URL, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', () => {
+  console.log('DB connected!!');
+});
 
 const corsOptions = {
   origin: CLIENT_URL,
@@ -33,8 +43,8 @@ app.get('/', (req, res) => {
 
 app.use('/api', indexRouter);
 
-app.listen(port, () => {
-  console.log(`Listening on port ${port}`);
+app.listen(PORT, () => {
+  console.log(`Listening on port ${PORT}`);
 });
 
 // catch 404 and forward to error handler
