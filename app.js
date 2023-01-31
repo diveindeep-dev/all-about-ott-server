@@ -11,6 +11,7 @@ import mongoose from 'mongoose';
 import { CLIENT_URL, DB_URL, PORT } from './config/index.js';
 
 import indexRouter from './routes/index.js';
+import authRouter from './routes/auth.js';
 
 const app = express();
 
@@ -42,6 +43,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api', indexRouter);
+app.use('/api/auth', authRouter);
 
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);
@@ -60,7 +62,7 @@ app.use(function (err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  // res.render('error');
 });
 
 export default app;
