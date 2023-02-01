@@ -30,11 +30,8 @@ export const getToken = (req, res, next) => {
 export const getUser = async (req, res, next) => {
   try {
     const user = await User.findById(req.authorizedUser._id, '_id name mail');
-
-    return res.status(statusCode.OK).json({
+    res.status(statusCode.OK).json({
       signInUser: { _id: user._id, name: user.name, mail: user.mail },
-      code: statusCode.OK,
-      result: 'ok',
     });
   } catch (err) {
     next(err);

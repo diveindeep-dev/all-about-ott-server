@@ -7,15 +7,11 @@ export const verifyToken = (req, res, next) => {
   const token = bearer[1];
   try {
     if (token === 'null') {
-      return req
-        .status(statusCode.FORBIDDEN)
-        .json({ code: statusCode.FORBIDDEN, error: '토큰 없음' });
+      return req.status(statusCode.FORBIDDEN).json({ error: '토큰 없음' });
     }
     jwt.verify(token, process.env.JWT_SECRET, (err, authorized) => {
       if (err) {
-        return res
-          .status(statusCode.FORBIDDEN)
-          .json({ code: statusCode.FORBIDDEN, error: '토큰 오류' });
+        return res.status(statusCode.FORBIDDEN).json({ error: '토큰 오류' });
       } else {
         req.authorizedUser = authorized;
       }
