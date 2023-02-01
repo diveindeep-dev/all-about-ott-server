@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs';
 
 const userSchema = new mongoose.Schema(
   {
-    mail: { type: String, require: true },
+    profile_id: { type: String, require: true },
     name: { type: String, require: true },
     password: { type: String, require: true },
     otts: [
@@ -14,7 +14,7 @@ const userSchema = new mongoose.Schema(
       }),
     ],
     posts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
-    friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   },
   {
     timestamps: {
